@@ -1,4 +1,4 @@
-FROM java:8-jdk as builder
+FROM maven:3-jdk-8 as builder
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends maven && \
@@ -12,7 +12,7 @@ RUN apt-get update && \
 
 
 
-FROM java:8-jdk-alpine
+FROM 3-jdk-8-slim
 
 ENV DEVMODE=false
 
