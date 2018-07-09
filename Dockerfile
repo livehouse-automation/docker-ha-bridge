@@ -1,18 +1,16 @@
-FROM maven:3-jdk-8 as builder
+FROM openjdk:8-jdk-alpine as builder
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends maven && \
+RUN apk update && \
+    apk add --update maven git && \
     mkdir -p /src/ha-bridge && \
     git clone https://github.com/bwssytems/ha-bridge.git /src/ha-bridge && \
     cd /src/ha-bridge && \
     mvn validate && \
     mvn package && \
     find /src/ha-bridge/target -type f -name 'ha-bridge-*.jar' -exec cp -v {} /src/ha-bridge.jar \; && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/cache/apk/*
 
-
-
-FROM 3-jdk-8-slim
+FROM openjdk:8-jdk-alpine
 
 ENV DEVMODE=false
 
