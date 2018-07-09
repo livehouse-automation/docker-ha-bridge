@@ -1,3 +1,9 @@
+# Multi-stage build.
+#   - first stage will build latest ha-bridge from source
+#   - second stage copies binaries from first stage
+
+
+# FIRST STAGE
 FROM openjdk:8-jdk-alpine as builder
 
 RUN apk update && \
@@ -10,6 +16,8 @@ RUN apk update && \
     find /src/ha-bridge/target -type f -name 'ha-bridge-*.jar' -exec cp -v {} /src/ha-bridge.jar \; && \
     rm -rf /var/cache/apk/*
 
+
+# SECOND STAGE
 FROM openjdk:8-jdk-alpine
 
 ENV DEVMODE=false
